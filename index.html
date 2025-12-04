@@ -452,7 +452,7 @@
       const s_absEDA = clip01(0.5 + 0.125 * z_med);
       subs.absEDA = s_absEDA;
       if (z_med >= 2.0) {
-        reasons.push(`Elevated baseline conductance (z≈${z_med.toFixed(1)}).`);
+        reasons.push(`Baseline skin conductance is somewhat higher than earlier readings (z≈${z_med.toFixed(1)}).`);
       }
 
       // Phasic EDA
@@ -463,7 +463,7 @@
       const s_phasic = 0.6 * s_scr + 0.4 * s_prom;
       subs.phasicEDA = s_phasic;
       if (s_phasic >= 0.6) {
-        reasons.push('Frequent/strong phasic sweating (SCRs).');
+        reasons.push('More frequent sweat responses than earlier in the session.');
       }
 
       // Tremor subscores
@@ -474,7 +474,7 @@
       );
       subs.tremorRatio = s_tremor_ratio;
       if (s_tremor_ratio >= 0.6) {
-        reasons.push(`Pronounced tremor spectral peak (ratio≈${tr_ratio.toFixed(1)}).`);
+        reasons.push(`Noticeable rhythmic movement pattern in the motion signal (ratio≈${tr_ratio.toFixed(1)}).`);
       }
 
       const accel_rms = win.tremor.accel_rms_g;
@@ -489,7 +489,7 @@
       const s_tremor = Math.max(s_tremor_ratio, 0.5 * s_acc + 0.5 * s_gyro);
       subs.tremor = s_tremor;
       if (s_acc >= 0.6 || s_gyro >= 0.6) {
-        reasons.push('High movement amplitude.');
+        reasons.push('Overall movement level is higher than typical.');
       }
 
       // Long-term alert
@@ -498,9 +498,9 @@
       subs.longTerm = lt_alert ? 1.0 : 0.0;
 
       if (lt_alert) {
-        reasons.push('Sustained upward trend over time (CUSUM).');
+        reasons.push('Pattern over several windows suggests a gradual upward trend.');
       } else if (raw_lt_alert && warmup_longterm) {
-        reasons.push('Possible upward trend, but long-term baseline not yet stable.');
+        reasons.push('There may be a gradual upward trend, but the long-term baseline is still being established.');
       }
 
       // Weighting fusion
@@ -578,10 +578,10 @@
 
       severityEl.style.background = bg;
       severityEl.textContent =
-        `Severity: ${lvl}/3 (${band})\n` +
+        `Severity: ${lvl}/10 (${band})\n` +
         (sev.reasons.length
-          ? 'Reasons:\n  • ' + sev.reasons.join('\n  • ')
-          : 'No specific triggers identified in this window.');
+          ? 'Notes:\n  • ' + sev.reasons.join('\n  • ')
+          : 'No notable changes detected in this window.');
 
       trendEl.textContent =
         `Windows seen: ${lt.windows_seen}\n` +
